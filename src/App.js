@@ -1,6 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import React from "react";
+import SummaryForm from "./pages/summary/SummaryForm";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           Learn React
         </a>
       </header>
+      <SummaryForm />
     </div>
   );
 }
