@@ -14,3 +14,19 @@ test("display image each scoop option from server", async () => {
     "Mint chip scoop",
   ]);
 });
+
+test("display image of each topping option from serer", async () => {
+  render(<Options optionType="toppings" />);
+
+  const toppingImages = await screen.findAllByRole("img", {
+    name: /topping$/i,
+  });
+  expect(toppingImages).toHaveLength(3);
+
+  const altText = toppingImages.map((element) => element.alt);
+  expect(altText).toEqual([
+    "Cherries topping",
+    "M&Ms topping",
+    "Hot Fudge topping",
+  ]);
+});
