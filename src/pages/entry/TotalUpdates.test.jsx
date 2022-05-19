@@ -21,5 +21,5 @@ test("update scoop subtotal when scoops change", async () => {
   });
   userEvent.clear(chocolateInput);
   userEvent.type(chocolateInput, "2");
-  expect(chocolateInput).toHaveContent("6.00");
+  expect(scoopSubtotal).toHaveTextContent("6.00");
 });
