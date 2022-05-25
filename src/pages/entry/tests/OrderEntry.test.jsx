@@ -1,8 +1,11 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitFor,
+} from "../../../test-utils/testing-library-utils";
 import OrderEntry from "../OrderEntry";
 import { rest } from "msw";
 import { server } from "../../../mocks/server";
-import { OrderDetailsProvider } from "../../../contexts/OrderDetails";
 
 test("handle error for scoops and toppings routes", async () => {
   server.resetHandlers(
@@ -14,7 +17,7 @@ test("handle error for scoops and toppings routes", async () => {
     )
   );
 
-  render(<OrderEntry />, { wrapper: OrderDetailsProvider });
+  render(<OrderEntry />);
 
   await waitFor(async () => {
     const alerts = await screen.findAllByRole("alert");
@@ -22,7 +25,3 @@ test("handle error for scoops and toppings routes", async () => {
     expect(alerts).toHaveLength(2);
   });
 });
-
-// {
-//   name: "An unexpected error ocurred. Please try again later.";
-// }

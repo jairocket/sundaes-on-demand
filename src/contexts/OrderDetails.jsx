@@ -65,7 +65,6 @@ export function OrderDetailsProvider(props) {
       // get option Map and make a copy
       const { [optionType]: optionMap } = optionCounts;
       const newOptionMap = new Map(optionMap);
-      console.log(newItemCount);
 
       //update the copied Map
 
