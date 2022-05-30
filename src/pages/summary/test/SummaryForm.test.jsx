@@ -1,7 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import SummaryForm from "../SummaryForm";
 import userEvent from "@testing-library/user-event";
-import { waitForElementToBeRemoved } from "@testing-library/dom";
 
 test("checkbox should be unchecked and button should be disabled by default", () => {
   render(<SummaryForm />);
@@ -37,14 +40,18 @@ test("popover responds to hover", async () => {
   expect(nullPopover).not.toBeInTheDocument();
 
   const termsAndConditions = screen.getByText(/terms and conditions/i);
-  await userEvent.hover(termsAndConditions);
+  userEvent.hover(termsAndConditions);
 
   const popover = screen.getByText(/no ice cream will actually be delivered/i);
   expect(popover).toBeInTheDocument();
 
-  await userEvent.unhover(termsAndConditions);
+  userEvent.unhover(termsAndConditions);
+
   await waitForElementToBeRemoved(() =>
     screen.queryByText(/no ice cream will actually be delivered/i)
   );
-  expect(nullPopover).not.toBeInTheDocument();
+
+  expect(
+    screen.queryByText(/no ice cream will actually be delivered/i)
+  ).not.toBeInTheDocument();
 });
