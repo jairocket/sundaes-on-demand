@@ -1,8 +1,9 @@
 import { render } from "@testing-library/react";
 import { OrderDetailsProvider } from "../contexts/OrderDetails";
+import { OrderPhaseProvider } from "../contexts/OrderPhase";
 
 const renderWithContext = (ui, options) =>
-  render(ui, { wrapper: OrderDetailsProvider, ...options });
+  render(ui, { wrapper: OrderDetailsProvider, OrderPhaseProvider, ...options });
 
 //re-esport everything
 
