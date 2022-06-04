@@ -4,7 +4,7 @@ import { Button } from "react-bootstrap";
 import { Popover } from "react-bootstrap";
 import { OverlayTrigger } from "react-bootstrap";
 
-export default function SummaryForm() {
+export default function SummaryForm({ setOrderPhase }) {
   const [tcchecked, setTcChecked] = useState(false);
   const popover = (
     <Popover id="popover-basic">
@@ -31,7 +31,12 @@ export default function SummaryForm() {
           label={checkboxLabel}
         />
       </Form.Group>
-      <Button variant="primary" type="submit" disabled={!tcchecked}>
+      <Button
+        variant="primary"
+        type="submit"
+        disabled={!tcchecked}
+        onClick={() => setOrderPhase("complete")}
+      >
         Confirm Order
       </Button>
     </Form>

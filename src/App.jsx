@@ -3,23 +3,47 @@ import { OrderDetailsProvider } from "./contexts/OrderDetails";
 import OrderEntry from "./pages/entry/OrderEntry";
 import OrderSumary from "./pages/summary/OrderSummary";
 
-import { OrderPhaseProvider } from "./contexts/OrderPhase";
+// import { OrderPhaseProvider } from "./contexts/OrderPhase";
 import OrderConfirmation from "./pages/confirmation/OrderConfirmation";
+import { useEffect, useState } from "react";
 
 function App() {
-  return (
-    <Container>
-      <OrderPhaseProvider>
+  const [orderPhase, setOrderPhase] = useState("inProgress");
+  useEffect(() => {
+    console.log(orderPhase);
+  }, [orderPhase]);
+
+  if (orderPhase === "inProgress") {
+    return (
+      <Container>
         <OrderDetailsProvider>
           {/* Summary page and entry page need provider */}
-          <OrderEntry />
-          <OrderSumary />
-          <OrderConfirmation />
+          <OrderEntry setOrderPhase={setOrderPhase} />
         </OrderDetailsProvider>
         {/* confirmation page does not need provider */}
-      </OrderPhaseProvider>
-    </Container>
-  );
+      </Container>
+    );
+  } else if (orderPhase === "review") {
+    return (
+      <Container>
+        <OrderDetailsProvider>
+          {/* Summary page and entry page need provider */}
+          <OrderSumary setOrderPhase={setOrderPhase} />
+        </OrderDetailsProvider>
+        {/* confirmation page does not need provider */}
+      </Container>
+    );
+  } else if (orderPhase === "complete") {
+    return (
+      <Container>
+        <OrderDetailsProvider>
+          {/* Summary page and entry page need provider */}
+          <OrderConfirmation setOrderPhase={setOrderPhase} />
+        </OrderDetailsProvider>
+        {/* confirmation page does not need provider */}
+      </Container>
+    );
+  }
 }
 
 export default App;

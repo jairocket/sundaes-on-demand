@@ -1,8 +1,9 @@
 import SummaryForm from "./SummaryForm";
 import { useOrderDetails } from "../../contexts/OrderDetails";
 
-export default function OrderSumary() {
+export default function OrderSumary({ setOrderPhase }) {
   const [orderDetails] = useOrderDetails();
+  console.log(orderDetails);
   return (
     <>
       <h2>Scoops: {orderDetails.totals.scoops}</h2>
@@ -13,7 +14,7 @@ export default function OrderSumary() {
       {/*map*/}
       <ul>{orderDetails.optionCounts}</ul>
       <h2>Total: {orderDetails.totals.grandTotal}</h2>
-      <SummaryForm />
+      <SummaryForm setOrderPhase={setOrderPhase} />
     </>
   );
 }
