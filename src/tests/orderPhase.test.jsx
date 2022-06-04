@@ -50,7 +50,7 @@ test("order phases for happy path", async () => {
     name: /Confirm Order/i,
   });
 
-  userEvent.hover(termsAndConditionsCheckbox);
+  userEvent.click(termsAndConditionsCheckbox);
   userEvent.click(confirmOrderButton);
 
   //confirm order number on confirmation page
@@ -76,14 +76,19 @@ test("order phases for happy path", async () => {
   userEvent.click(newOrderButton);
 
   //check that scoops and toppings subtotals have been reset
-
-  const newScoopSubtotal = screen.getByText("Scoops: $", { exact: false });
+  await waitFor(async () => {
+    const newScoopSubtotal = screen.getByText("Scoops total: $", {
+      exact: false,
+    });
+    expect(newScoopSubtotal).toHaveTextContent("0.00");
+  });
+  // const newScoopSubtotal = screen.getByText("Scoops: $", { exact: false });
   const newToppingSubtotal = screen.getByText("Toppings: $", { exact: false });
   const newTotal = screen.getByText(/Total: \$/, { exact: false });
 
-  expect(newScoopSubtotal).toHaveTextContent("0.00");
+  // expect(newScoopSubtotal).toHaveTextContent("0.00");
   expect(newToppingSubtotal).toHaveTextContent("0.00");
   expect(newTotal).toHaveTextContent("0.00");
 
-  //do we nwed to await anything to avoid errors?
+  //do we need to await anything to avoid errors?
 });
