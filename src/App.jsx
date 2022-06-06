@@ -5,13 +5,10 @@ import OrderSumary from "./pages/summary/OrderSummary";
 
 // import { OrderPhaseProvider } from "./contexts/OrderPhase";
 import OrderConfirmation from "./pages/confirmation/OrderConfirmation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function App() {
   const [orderPhase, setOrderPhase] = useState("inProgress");
-  useEffect(() => {
-    console.log(orderPhase);
-  }, [orderPhase]);
 
   if (orderPhase === "inProgress") {
     return (

@@ -10,13 +10,24 @@ test("order phases for happy path", async () => {
   const chocolateScoop = await screen.findByRole("spinbutton", {
     name: /Chocolate/i,
   });
+  const vanillaScoop = await screen.findByRole("spinbutton", {
+    name: /Vanilla/i,
+  });
   const hotFudgeTopping = await screen.findByRole("checkbox", {
     name: /Hot Fudge/i,
   });
+  const cherryTopping = await screen.findByRole("checkbox", {
+    name: /Cherries/i,
+  });
+
   userEvent.clear(chocolateScoop);
-  userEvent.type(chocolateScoop, "1");
+  userEvent.type(chocolateScoop, "2");
+  userEvent.clear(vanillaScoop);
+  userEvent.type(vanillaScoop, "1");
   userEvent.clear(hotFudgeTopping);
   userEvent.click(hotFudgeTopping);
+  userEvent.clear(cherryTopping);
+  userEvent.click(cherryTopping);
   //find and click button
   const orderEntryButton = screen.getByRole("button", {
     name: /Order Sundae!/i,
@@ -30,7 +41,7 @@ test("order phases for happy path", async () => {
       exact: false,
     });
 
-    expect(scoopSubtotal).toHaveTextContent("2.00");
+    expect(scoopSubtotal).toHaveTextContent("6.00");
   });
 
   const toppingSubtotal = await screen.findByText("Toppings: $", {
@@ -38,8 +49,8 @@ test("order phases for happy path", async () => {
   });
   const total = await screen.findByText(/Total: \$/);
 
-  expect(toppingSubtotal).toHaveTextContent("1.50");
-  expect(total).toHaveTextContent("3.50");
+  expect(toppingSubtotal).toHaveTextContent("3.00");
+  expect(total).toHaveTextContent("9.00");
 
   //accept terms and conditions and click button to confirm order
 
@@ -82,12 +93,16 @@ test("order phases for happy path", async () => {
     });
     expect(newScoopSubtotal).toHaveTextContent("0.00");
   });
-  // const newScoopSubtotal = screen.getByText("Scoops: $", { exact: false });
-  const newToppingSubtotal = screen.getByText("Toppings: $", { exact: false });
-  const newTotal = screen.getByText(/Total: \$/, { exact: false });
 
-  // expect(newScoopSubtotal).toHaveTextContent("0.00");
-  expect(newToppingSubtotal).toHaveTextContent("0.00");
+  await waitFor(async () => {
+    const newToppingSubtotal = screen.getByText("Toppings total: $", {
+      exact: false,
+    });
+    expect(newToppingSubtotal).toHaveTextContent("0.00");
+  });
+
+  const newTotal = screen.getByText(/Grand Total: \$/i, { exact: false });
+
   expect(newTotal).toHaveTextContent("0.00");
 
   //do we need to await anything to avoid errors?

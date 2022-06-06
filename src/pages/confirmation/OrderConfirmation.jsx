@@ -6,7 +6,10 @@ import { useOrderDetails } from "../../contexts/OrderDetails";
 export default function OrderConfirmation({ setOrderPhase }) {
   const [orderNumber, setOrderNumber] = useState();
   const [loading, setLoading] = useState(true);
-  const [updateItemCount] = useOrderDetails();
+  const [{ resetItemCount }] = useOrderDetails();
+
+  console.log(resetItemCount);
+
   useEffect(() => {
     axios.post(`http://localhost:3030/order`).then((response) => {
       setOrderNumber(response.data.orderNumber);
@@ -19,13 +22,15 @@ export default function OrderConfirmation({ setOrderPhase }) {
   ) : (
     <>
       <h1>Thank you!</h1>
-      <h2>Your order number is `{orderNumber}`</h2>
+      <h2>Your order number is {orderNumber}</h2>
       <p>as per out terms and conditions, nothing will happen now</p>
 
       <Button
         variant="primary"
         type="button"
         onClick={() => {
+          resetItemCount();
+
           setOrderPhase("inProgress");
         }}
       >
