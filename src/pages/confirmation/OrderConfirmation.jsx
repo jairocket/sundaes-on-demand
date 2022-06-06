@@ -8,8 +8,6 @@ export default function OrderConfirmation({ setOrderPhase }) {
   const [loading, setLoading] = useState(true);
   const [{ resetItemCount }] = useOrderDetails();
 
-  console.log(resetItemCount);
-
   useEffect(() => {
     axios.post(`http://localhost:3030/order`).then((response) => {
       setOrderNumber(response.data.orderNumber);

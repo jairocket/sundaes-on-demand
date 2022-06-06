@@ -34,7 +34,7 @@ export default function SummaryForm({ setOrderPhase }) {
       </Form.Group>
       <Button
         variant="primary"
-        type="submit"
+        type="button"
         disabled={!tcchecked}
         onClick={() => setOrderPhase("complete")}
       >

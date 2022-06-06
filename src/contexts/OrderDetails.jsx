@@ -89,7 +89,6 @@ export function OrderDetailsProvider(props) {
       newOptionCounts["toppings"] = toppingsMap;
 
       setOptionCounts(newOptionCounts);
-      console.log(optionCounts);
     }
 
     //getter: object containing option counts for scoops and toppings, subtotals and totals
