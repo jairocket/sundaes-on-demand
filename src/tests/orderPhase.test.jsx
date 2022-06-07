@@ -1,7 +1,7 @@
 import { render, screen } from "../test-utils/testing-library-utils";
 import userEvent from "@testing-library/user-event";
 import App from "../App";
-import {  waitForElementToBeRemoved } from "@testing-library/react";
+import { waitForElementToBeRemoved } from "@testing-library/react";
 
 test("order phases for happy path", async () => {
   //render app
@@ -43,7 +43,6 @@ test("order phases for happy path", async () => {
   expect(vanillaCounts).toBeInTheDocument();
 
   // const scoopCounts = screen.getByRole("list", { name: /scoops/i });
-
   // expect(scoopCounts).toMatchSnapshot();
 
   const scoopSubtotal = await screen.findByText("Scoops: $", {
@@ -92,29 +91,50 @@ test("order phases for happy path", async () => {
   userEvent.click(newOrderButton);
 
   //check that scoops and toppings subtotals have been reset
- 
-    const newScoopSubtotal = await screen.findByText("Scoops total: $", {
-      exact: false,
-    });
-    expect(newScoopSubtotal).toHaveTextContent("0.00");
- 
 
+  const newScoopSubtotal = await screen.findByText("Scoops total: $", {
+    exact: false,
+  });
+  expect(newScoopSubtotal).toHaveTextContent("0.00");
 
+  const newToppingSubtotal = await screen.findByText("Toppings total: $", {
+    exact: false,
+  });
 
+  // eslint-disable-next-line testing-library/no-debugging-utils
+  screen.logTestingPlaygroundURL();
 
-    const newToppingSubtotal = await screen.findByText("Toppings total: $", {
-      exact: false,
-    });
-
-    // eslint-disable-next-line testing-library/no-debugging-utils
-    screen.logTestingPlaygroundURL()
-
-    expect(newToppingSubtotal).toHaveTextContent("0.00");
-
+  expect(newToppingSubtotal).toHaveTextContent("0.00");
 
   const newTotal = screen.getByText(/Grand Total: \$/i, { exact: false });
 
   expect(newTotal).toHaveTextContent("0.00");
 
   //do we need to await anything to avoid errors?
+});
+
+test("OrderSummary should show topping's summary only if a topping option is chosen", async () => {
+  render(<App />);
+
+  const mintChipScoop = await screen.findByRole("spinbutton", {
+    name: /mint chip/i,
+  });
+
+  const OrderSundaeButton = screen.getByRole("button", {
+    name: /order sundae!/i,
+  });
+
+  userEvent.type(mintChipScoop, "3");
+  userEvent.click(OrderSundaeButton);
+
+  const scoopSubtotal = await screen.findByText("Scoops: $", {
+    exact: false,
+  });
+
+  const toppingSubtotal = screen.queryByText("Toppings: $", {
+    exact: false,
+  });
+
+  expect(scoopSubtotal).toHaveTextContent("6.00");
+  expect(toppingSubtotal).not.toBeInTheDocument();
 });
