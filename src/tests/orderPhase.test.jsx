@@ -1,7 +1,7 @@
 import { render, screen } from "../test-utils/testing-library-utils";
 import userEvent from "@testing-library/user-event";
 import App from "../App";
-import { waitFor } from "@testing-library/react";
+import {  waitForElementToBeRemoved } from "@testing-library/react";
 
 test("order phases for happy path", async () => {
   //render app
@@ -36,13 +36,21 @@ test("order phases for happy path", async () => {
 
   //check summary information based on order
 
-  await waitFor(async () => {
-    const scoopSubtotal = await screen.findByText("Scoops: $", {
-      exact: false,
-    });
+  const chocolateCounts = await screen.findByText(/2 Chocolate/i);
+  expect(chocolateCounts).toBeInTheDocument();
 
-    expect(scoopSubtotal).toHaveTextContent("6.00");
+  const vanillaCounts = await screen.findByText(/1 Vanilla/i);
+  expect(vanillaCounts).toBeInTheDocument();
+
+  // const scoopCounts = screen.getByRole("list", { name: /scoops/i });
+
+  // expect(scoopCounts).toMatchSnapshot();
+
+  const scoopSubtotal = await screen.findByText("Scoops: $", {
+    exact: false,
   });
+
+  expect(scoopSubtotal).toHaveTextContent("6.00");
 
   const toppingSubtotal = await screen.findByText("Toppings: $", {
     exact: false,
@@ -65,19 +73,16 @@ test("order phases for happy path", async () => {
   userEvent.click(confirmOrderButton);
 
   //confirm order number on confirmation page
-  // await waitFor(async () => {
-  //   const loading = await screen.findByRole("heading", { name: /loading/i });
-  //   expect(loading).toBeInTheDocument();
-  // });
-  // await waitForElementToBeRemoved(screen.queryByText(/loading/i));
-  await waitFor(async () => {
-    const orderNumber = await screen.findByText("Your order number is", {
-      exact: false,
-    });
-    expect(orderNumber).toHaveTextContent("9876543210");
-  });
 
-  //find a way to check order number
+  const loading = screen.getByText(/loading/i);
+  expect(loading).toBeInTheDocument();
+
+  await waitForElementToBeRemoved(screen.queryByText(/loading/i));
+
+  const orderNumber = await screen.findByText("Your order number is", {
+    exact: false,
+  });
+  expect(orderNumber).toHaveTextContent("9876543210");
 
   //click "new order" button on confirmation page
   const newOrderButton = screen.getByRole("button", {
@@ -87,19 +92,25 @@ test("order phases for happy path", async () => {
   userEvent.click(newOrderButton);
 
   //check that scoops and toppings subtotals have been reset
-  await waitFor(async () => {
-    const newScoopSubtotal = screen.getByText("Scoops total: $", {
+ 
+    const newScoopSubtotal = await screen.findByText("Scoops total: $", {
       exact: false,
     });
     expect(newScoopSubtotal).toHaveTextContent("0.00");
-  });
+ 
 
-  await waitFor(async () => {
-    const newToppingSubtotal = screen.getByText("Toppings total: $", {
+
+
+
+    const newToppingSubtotal = await screen.findByText("Toppings total: $", {
       exact: false,
     });
+
+    // eslint-disable-next-line testing-library/no-debugging-utils
+    screen.logTestingPlaygroundURL()
+
     expect(newToppingSubtotal).toHaveTextContent("0.00");
-  });
+
 
   const newTotal = screen.getByText(/Grand Total: \$/i, { exact: false });
 
