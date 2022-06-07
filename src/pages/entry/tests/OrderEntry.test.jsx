@@ -6,6 +6,7 @@ import {
 import OrderEntry from "../OrderEntry";
 import { rest } from "msw";
 import { server } from "../../../mocks/server";
+import userEvent from "@testing-library/user-event";
 
 test("handle error for scoops and toppings routes", async () => {
   server.resetHandlers(
@@ -24,4 +25,26 @@ test("handle error for scoops and toppings routes", async () => {
 
     expect(alerts).toHaveLength(2);
   });
+});
+
+test("button should be disable when no scoop option is selected", async () => {
+  render(<OrderEntry />);
+
+  const vanillaScoop = await screen.findByRole("spinbutton", {
+    name: /vanilla/i,
+  });
+
+  const confirmButton = screen.getByRole("button", { name: /order sundae/i });
+
+  expect(confirmButton).toBeDisabled();
+
+  userEvent.clear(vanillaScoop);
+  userEvent.type(vanillaScoop, "1");
+
+  expect(confirmButton).toBeEnabled();
+
+  userEvent.clear(vanillaScoop);
+  userEvent.type(vanillaScoop, "0");
+
+  expect(confirmButton).toBeDisabled();
 });
