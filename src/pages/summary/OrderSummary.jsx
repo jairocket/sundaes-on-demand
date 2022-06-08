@@ -7,9 +7,7 @@ export default function OrderSummary({ setOrderPhase }) {
   const selectedScoops = [...orderDetails.scoops.keys()];
   const selectedToppings = [...orderDetails.toppings.keys()];
 
-  console.log(orderDetails.scoops);
-
-  const format = (item, total)=> `${item} ${total}`
+  const format = (item, total) => `${item} ${total}`;
 
   return (
     <>
@@ -17,8 +15,9 @@ export default function OrderSummary({ setOrderPhase }) {
 
       <ul aria-label="scoops">
         {selectedScoops.map((item) => (
-          <li key={selectedScoops.indexOf(item)}>{format(orderDetails.scoops.get(item), item)}</li>
-
+          <li key={selectedScoops.indexOf(item)}>
+            {format(orderDetails.scoops.get(item), item)}
+          </li>
         ))}
       </ul>
 
