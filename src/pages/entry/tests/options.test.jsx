@@ -1,3 +1,4 @@
+import userEvent from "@testing-library/user-event";
 import { render, screen } from "../../../test-utils/testing-library-utils";
 import Options from "../Options";
 
@@ -29,4 +30,45 @@ test("display image of each topping option from server", async () => {
     "M&Ms topping",
     "Hot Fudge topping",
   ]);
+});
+
+describe("invalid scoop values", () => {
+  it("scoop subtotal should not update when a negative values are typed", async () => {
+    render(<Options optionType={"scoops"} />);
+
+    const mintChipScoopInput = await screen.findByRole("spinbutton", {
+      name: /mint chip/i,
+    });
+    const scoopSubtotal = screen.getByText("Scoops total: $", { exact: false });
+
+    userEvent.clear(mintChipScoopInput);
+    userEvent.type(mintChipScoopInput, "-1");
+    expect(scoopSubtotal).toHaveTextContent("0.00");
+  });
+
+  // it("scoop subtotal should not update when a value greater than ten is typed", async () => {
+  //   render(<Options optionType={"scoops"} />);
+
+  //   const mintChipScoopInput = await screen.findByRole("spinbutton", {
+  //     name: /mint chip/i,
+  //   });
+  //   const scoopSubtotal = screen.getByText("Scoops total: $", { exact: false });
+
+  //   userEvent.clear(mintChipScoopInput);
+  //   userEvent.type(mintChipScoopInput, "37");
+  //   expect(scoopSubtotal).toHaveTextContent("0.00");
+  // });
+
+  // it("scoop subtotal should not update when a float number is typed", async () => {
+  //   render(<Options optionType={"scoops"} />);
+
+  //   const mintChipScoopInput = await screen.findByRole("spinbutton", {
+  //     name: /mint chip/i,
+  //   });
+  //   const scoopSubtotal = screen.getByText("Scoops total: $", { exact: false });
+
+  //   userEvent.clear(mintChipScoopInput);
+  //   userEvent.type(mintChipScoopInput, "2.5");
+  //   expect(scoopSubtotal).toHaveTextContent("0.00");
+  // });
 });

@@ -114,6 +114,7 @@ describe("grand total", () => {
 
     expect(grandTotal).toHaveTextContent("5.50");
 
+    userEvent.clear(vanillaScoopInput);
     userEvent.type(vanillaScoopInput, "1");
     userEvent.click(mmsToppingInput);
 
