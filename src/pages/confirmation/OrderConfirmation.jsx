@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import axios from "axios";
 import { useOrderDetails } from "../../contexts/OrderDetails";
+import AlertBanner from "../common/AlertBanner";
 
 export default function OrderConfirmation({ setOrderPhase }) {
   const [orderNumber, setOrderNumber] = useState(null);
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [{ resetItemCount }] = useOrderDetails();
 
@@ -14,11 +16,16 @@ export default function OrderConfirmation({ setOrderPhase }) {
       .then((response) => {
         setOrderNumber(response.data.orderNumber);
       })
+      .catch((error) => {
+        setError(true);
+      })
       .then(() => setLoading(false));
   }, []);
 
   if (loading) {
     return <div>Loading</div>;
+  } else if (error) {
+    return <AlertBanner />;
   } else {
     return (
       <>
