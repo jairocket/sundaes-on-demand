@@ -46,29 +46,29 @@ describe("invalid scoop values", () => {
     expect(scoopSubtotal).toHaveTextContent("0.00");
   });
 
-  // it("scoop subtotal should not update when a value greater than ten is typed", async () => {
-  //   render(<Options optionType={"scoops"} />);
+  it("scoop subtotal should not update when a value greater than ten is typed", async () => {
+    render(<Options optionType={"scoops"} />);
 
-  //   const mintChipScoopInput = await screen.findByRole("spinbutton", {
-  //     name: /mint chip/i,
-  //   });
-  //   const scoopSubtotal = screen.getByText("Scoops total: $", { exact: false });
+    const mintChipScoopInput = await screen.findByRole("spinbutton", {
+      name: /mint chip/i,
+    });
+    const scoopSubtotal = screen.getByText("Scoops total: $", { exact: false });
 
-  //   userEvent.clear(mintChipScoopInput);
-  //   userEvent.type(mintChipScoopInput, "37");
-  //   expect(scoopSubtotal).toHaveTextContent("0.00");
-  // });
+    userEvent.clear(mintChipScoopInput);
+    userEvent.type(mintChipScoopInput, "37");
+    expect(scoopSubtotal).toHaveTextContent("0.00");
+  });
 
-  // it("scoop subtotal should not update when a float number is typed", async () => {
-  //   render(<Options optionType={"scoops"} />);
+  it("scoop subtotal should not update when a float number is typed", async () => {
+    render(<Options optionType={"scoops"} />);
 
-  //   const mintChipScoopInput = await screen.findByRole("spinbutton", {
-  //     name: /mint chip/i,
-  //   });
-  //   const scoopSubtotal = screen.getByText("Scoops total: $", { exact: false });
+    const mintChipScoopInput = await screen.findByRole("spinbutton", {
+      name: /mint chip/i,
+    });
+    const scoopSubtotal = screen.getByText("Scoops total: $", { exact: false });
 
-  //   userEvent.clear(mintChipScoopInput);
-  //   userEvent.type(mintChipScoopInput, "2.5");
-  //   expect(scoopSubtotal).toHaveTextContent("0.00");
-  // });
+    userEvent.clear(mintChipScoopInput);
+    userEvent.type(mintChipScoopInput, "2.5");
+    expect(scoopSubtotal).toHaveTextContent("0.00");
+  });
 });

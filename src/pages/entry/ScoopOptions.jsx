@@ -19,7 +19,11 @@ export default function ScoopOptions({ name, imagePath, updateItemCount }) {
     //   updateItemCount(name, "0")
     // }else if ()
 
-    if (valueIsValid) updateItemCount(name, event.target.value);
+    if (valueIsValid) {
+      updateItemCount(name, event.target.value);
+    } else {
+      updateItemCount(name, "0");
+    }
   };
 
   return (
