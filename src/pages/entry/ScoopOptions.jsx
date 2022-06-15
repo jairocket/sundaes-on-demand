@@ -14,10 +14,6 @@ export default function ScoopOptions({ name, imagePath, updateItemCount }) {
       Math.floor(currentValueFloat) === currentValueFloat;
 
     setIsValid(valueIsValid);
-    // if(valueIsValid)
-    // if(event.target.value > 10){
-    //   updateItemCount(name, "0")
-    // }else if ()
 
     if (valueIsValid) {
       updateItemCount(name, event.target.value);
